@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
-import ParticleBackground from "../components/ParticleBackground";
 
 const Home = () => {
   return (
     <>
-      <ParticleBackground />
       <div
         style={{
           height: "100vh",
