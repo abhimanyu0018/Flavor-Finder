@@ -1,9 +1,16 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { useTheme } from "../context/ThemeContext";
 const LoginPage = () => {
+  const { isDark } = useTheme();
   return (
-    <div style={{ height: "100vh", background: "#464646", color: "#FFFFFF" }}>
+    <div
+      style={{
+        height: "100vh",
+        backgroundColor: isDark ? "#464646" : "",
+        color: isDark ? "#FFFFFF" : "",
+      }}
+    >
       <Grid
         container
         alignItems="center"
@@ -39,7 +46,7 @@ const LoginPage = () => {
                 <Button
                   variant="contained"
                   fullWidth
-                  style={{ backgroundColor: "#232323" }}
+                  style={{ backgroundColor: "#111111" }}
                 >
                   Login
                 </Button>

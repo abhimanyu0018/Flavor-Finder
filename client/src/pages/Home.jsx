@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { Button, Grid, Typography } from "@mui/material";
+import { useTheme } from "../context/ThemeContext";
 
 const Home = () => {
+  const { isDark, toggleTheme } = useTheme();
+
   return (
     <>
       <div
         style={{
           height: "100vh",
-          background: "#464646",
-          color: "#FFFFFF",
+          background: isDark ? "#464646" : "",
+          color: isDark ? "#FFFFFF" : "#111111",
         }}
       >
         <Grid

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 import {
   AppBar,
   Toolbar,
@@ -9,39 +10,32 @@ import {
   Switch,
   Box,
 } from "@mui/material";
-// import MenuIcon from "@mui/icons-material/Menu";
 
 const Header = () => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const handleDarkModeToggle = () => {
-    setDarkMode(!darkMode);
-  };
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <AppBar
       position="static"
-      color={darkMode ? "default" : "primary"}
-      style={{ backgroundColor: "#232323" }}
+      color={isDark ? "primary" : "default"}
+      style={{ backgroundColor: isDark ? "#232323" : "" }}
     >
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Flavor Finder
         </Typography>
         <Switch
-          checked={darkMode}
-          onChange={handleDarkModeToggle}
+          checked={isDark}
+          onChange={toggleTheme}
           color="default"
           inputProps={{ "aria-label": "toggle dark mode" }}
         />
         <Box sx={{ display: "flex", gap: 1 }}>
-          {" "}
-          {/* Add Box component to create space */}
           <Link
             to="/login"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <Button color="inherit" style={{ backgroundColor: "#111111" }}>
+            <Button style={{ color: "#FFFFFF", backgroundColor: "#111111" }}>
               Login
             </Button>
           </Link>
@@ -49,7 +43,10 @@ const Header = () => {
             to="/signup"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <Button color="inherit" style={{ backgroundColor: "#111111" }}>
+            <Button
+              color="inherit"
+              style={{ color: "#FFFFFF", backgroundColor: "#111111" }}
+            >
               Sign Up
             </Button>
           </Link>
