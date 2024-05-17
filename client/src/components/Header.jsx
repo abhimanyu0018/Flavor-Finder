@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import logo from "../assets/logo.png";
 import {
   AppBar,
   Toolbar,
@@ -22,7 +23,9 @@ const Header = () => {
     >
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Flavor Finder
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <img src={logo} width="60px" />
+          </Link>
         </Typography>
         <Switch
           checked={isDark}
