@@ -5,6 +5,7 @@ const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Layout = lazy(() => import("./pages/Layout"));
+const Recipe = lazy(() => import("./pages/Recipe"));
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
               element={
                 <Suspense fallback={<div>Loading...</div>}>
                   <Signup />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/recipe"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Recipe />
                 </Suspense>
               }
             />
