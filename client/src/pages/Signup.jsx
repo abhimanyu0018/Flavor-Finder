@@ -14,8 +14,22 @@ const Signup = () => {
     e.preventDefault();
 
     const userData = { firstName, lastName, email, password };
+    const url = "http://localhost:8000";
 
-    console.log(userData);
+    fetch(`${url}/api/user/signup`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
