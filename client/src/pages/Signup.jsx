@@ -1,9 +1,23 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
-
+import { useState } from "react";
 const Signup = () => {
   const { isDark } = useTheme();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleForm = (e) => {
+    e.preventDefault();
+
+    const userData = { firstName, lastName, email, password };
+
+    console.log(userData);
+  };
+
   return (
     <div
       style={{
@@ -30,6 +44,10 @@ const Signup = () => {
                   label="First Name"
                   fullWidth
                   required
+                  value={firstName}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -38,6 +56,10 @@ const Signup = () => {
                   label="Last Name"
                   fullWidth
                   required
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -47,6 +69,10 @@ const Signup = () => {
                   type="email"
                   fullWidth
                   required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -56,6 +82,10 @@ const Signup = () => {
                   type="password"
                   fullWidth
                   required
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -64,6 +94,7 @@ const Signup = () => {
                   color="primary"
                   style={{ backgroundColor: "#232323" }}
                   fullWidth
+                  onClick={handleForm}
                 >
                   Sign up
                 </Button>

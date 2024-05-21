@@ -1,8 +1,19 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import { useState } from "react";
+
 const LoginPage = () => {
   const { isDark } = useTheme();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    const userDate = { email, password };
+    console.log(userDate);
+  };
+
   return (
     <div
       style={{
@@ -30,6 +41,10 @@ const LoginPage = () => {
                   type="email"
                   fullWidth
                   required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -40,6 +55,10 @@ const LoginPage = () => {
                   fullWidth
                   required
                   style={{ color: "#FFFFFF" }}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -47,6 +66,7 @@ const LoginPage = () => {
                   variant="contained"
                   fullWidth
                   style={{ backgroundColor: "#111111" }}
+                  onClick={handleForm}
                 >
                   Login
                 </Button>
