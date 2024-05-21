@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+
 const app = express()
 
 
@@ -18,12 +19,12 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 
+//------------ routes for sever --------------- 
 
-app.get('/', (req,res) => { console.log("hello")})
+// user route --
+import userRounter from "./routes/user.routes.js";
+app.use("/api/user", userRounter)
 
 
-app.listen(8000, () => {
-    console.log(`Server is running at port :8000 ` );
-})
 
 export default app
