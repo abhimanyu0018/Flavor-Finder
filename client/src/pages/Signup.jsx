@@ -1,7 +1,8 @@
 import { Button, Grid, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 const Signup = () => {
   const { isDark } = useTheme();
 
@@ -9,6 +10,8 @@ const Signup = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleForm = async (e) => {
     e.preventDefault();
@@ -29,7 +32,9 @@ const Signup = () => {
 
       const data = await response.json();
 
-      localStorage.setItem("authToken", data.token);
+      login(data.token);
+
+      navigate("/recipe");
     } catch (error) {
       console.error("There was a problem with the signup request:", error);
     }
