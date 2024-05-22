@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AuthRoute from "./components/AuthRoute";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -47,9 +48,11 @@ function App() {
             <Route
               path="/recipe"
               element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Recipe />
-                </Suspense>
+                <AuthRoute>
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Recipe />
+                  </Suspense>
+                </AuthRoute>
               }
             />
           </Route>
