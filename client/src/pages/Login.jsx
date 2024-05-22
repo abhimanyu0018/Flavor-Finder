@@ -2,12 +2,14 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
   const { isDark } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -30,7 +32,7 @@ const LoginPage = () => {
 
       const data = await response.json();
       // console.log(data);         ----for debug
-      localStorage.setItem("authToken", data.token);
+      login(data.token);
 
       // console.log(localStorage.getItem("authToken"));   --------- for debug
       navigate("/recipe");

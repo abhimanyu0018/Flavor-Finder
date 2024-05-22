@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthRoute from "./components/AuthRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
@@ -11,55 +12,57 @@ const Recipe = lazy(() => import("./pages/Recipe"));
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <Layout />
-              </Suspense>
-            }
-          >
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
             <Route
-              index
+              path="/"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <Home />
+                  <Layout />
                 </Suspense>
               }
-            />
-            <Route
-              path="/login"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Login />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <Suspense fallback={<div>Loading...</div>}>
-                  <Signup />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/recipe"
-              element={
-                <AuthRoute>
+            >
+              <Route
+                index
+                element={
                   <Suspense fallback={<div>Loading...</div>}>
-                    <Recipe />
+                    <Home />
                   </Suspense>
-                </AuthRoute>
-              }
-            />
-          </Route>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Login />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Signup />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/recipe"
+                element={
+                  <AuthRoute>
+                    <Suspense fallback={<div>Loading...</div>}>
+                      <Recipe />
+                    </Suspense>
+                  </AuthRoute>
+                }
+              />
+            </Route>
 
-          <Route path="*" element={<div>error</div>} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<div>error</div>} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }

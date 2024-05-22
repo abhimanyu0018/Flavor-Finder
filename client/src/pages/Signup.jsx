@@ -10,26 +10,29 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
 
     const userData = { firstName, lastName, email, password };
     const url = "http://localhost:8000";
 
-    fetch(`${url}/api/user/signup`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
+    try {
+      const response = await fetch(`${url}/api/user/signup`, {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(userData),
       });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      localStorage.setItem("authToken", data.token);
+    } catch (error) {
+      console.error("There was a problem with the signup request:", error);
+    }
   };
 
   return (
