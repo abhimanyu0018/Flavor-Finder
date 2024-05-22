@@ -8,10 +8,24 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const handleForm = (e) => {
     e.preventDefault();
     const userDate = { email, password };
-    console.log(userDate);
+
+    // console.log(userDate);
+
+    fetch(`${apiUrl}/api/user/login`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(userDate),
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    });
   };
 
   return (
