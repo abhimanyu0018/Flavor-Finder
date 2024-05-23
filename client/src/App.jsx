@@ -11,6 +11,7 @@ const Recipe = lazy(() => import("./pages/Recipe"));
 const RecipeDetail = lazy(() => import("./components/RecipeDetail")); // Import RecipeDetail
 
 function App() {
+  const token = localStorage.getItem("authToken");
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -35,7 +36,7 @@ function App() {
               path="/login"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <Login />
+                  {token ? <Recipe /> : <Login />}
                 </Suspense>
               }
             />
@@ -43,7 +44,7 @@ function App() {
               path="/signup"
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <Signup />
+                  {token ? <Recipe /> : <Signup />}
                 </Suspense>
               }
             />
