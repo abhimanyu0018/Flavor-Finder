@@ -25,6 +25,10 @@ app.use(express.static("public"));
 import userRounter from "./routes/user.routes.js";
 app.use("/api/user", userRounter)
 
+// recipe route --
+import recipeRouter from "./routes/recipe.routes.js";
+app.use("/api/recipe",recipeRouter)
+
 
 
 export default app
