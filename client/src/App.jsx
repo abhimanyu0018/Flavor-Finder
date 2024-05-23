@@ -8,62 +8,70 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Layout = lazy(() => import("./pages/Layout"));
 const Recipe = lazy(() => import("./pages/Recipe"));
+const RecipeDetail = lazy(() => import("./components/RecipeDetail")); // Import RecipeDetail
 
 function App() {
   return (
-    <>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Layout />
+              </Suspense>
+            }
+          >
             <Route
-              path="/"
+              index
               element={
                 <Suspense fallback={<div>Loading...</div>}>
-                  <Layout />
+                  <Home />
                 </Suspense>
               }
-            >
-              <Route
-                index
-                element={
+            />
+            <Route
+              path="/login"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Signup />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/recipe"
+              element={
+                <AuthRoute>
                   <Suspense fallback={<div>Loading...</div>}>
-                    <Home />
+                    <Recipe />
                   </Suspense>
-                }
-              />
-              <Route
-                path="/login"
-                element={
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/recipe/:id" // New route for recipe details
+              element={
+                <AuthRoute>
                   <Suspense fallback={<div>Loading...</div>}>
-                    <Login />
+                    <RecipeDetail />
                   </Suspense>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <Suspense fallback={<div>Loading...</div>}>
-                    <Signup />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/recipe"
-                element={
-                  <AuthRoute>
-                    <Suspense fallback={<div>Loading...</div>}>
-                      <Recipe />
-                    </Suspense>
-                  </AuthRoute>
-                }
-              />
-            </Route>
-
-            <Route path="*" element={<div>error</div>} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
-    </>
+                </AuthRoute>
+              }
+            />
+          </Route>
+          <Route path="*" element={<div>Error: Page not found</div>} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

@@ -5,43 +5,51 @@ import {
   Button,
   Grid,
   Typography,
-  Card,
-  CardContent,
-  CardMedia,
   Box,
+  CircularProgress,
 } from "@mui/material";
-import { useTheme } from "../context/ThemeContext"; // Import useTheme hook
+import { useTheme } from "../context/ThemeContext";
+import RecipeCard from "../components/RecipeCard";
+import RandomRecipe from "../components/RandomRecipe";
 
 const RecipeSearch = () => {
-  const { isDark } = useTheme(); // Use the theme context to get darkMode state
+  const { isDark } = useTheme();
   const [query, setQuery] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleSearch = async () => {
-    // For now, mock the recipe fetching process
-    const mockRecipes = [
-      {
-        id: 1,
-        title: "Spaghetti Bolognese",
-        image: "https://via.placeholder.com/150",
-        description: "A classic Italian pasta dish with rich, meaty sauce.",
-      },
-      {
-        id: 2,
-        title: "Chicken Curry",
-        image: "https://via.placeholder.com/150",
-        description:
-          "A flavorful and spicy chicken curry with a hint of coconut.",
-      },
-      // Add more mock recipes as needed
-    ];
+    try {
+      setError(null);
+      setLoading(true);
 
-    // Filter recipes based on the query (this is a simple mock filter)
-    const filteredRecipes = mockRecipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(query.toLowerCase())
-    );
+      const response = await fetch(`${apiUrl}/api/recipe/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ recipeName: query }),
+      });
 
-    setRecipes(filteredRecipes);
+      if (!response.ok) {
+        throw new Error("Failed to fetch recipes");
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "Failed to fetch recipes");
+      }
+
+      setRecipes(result.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+      setError(error.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,26 +86,31 @@ const RecipeSearch = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid container spacing={2} style={{ marginTop: "2rem" }}>
-          {recipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  alt={recipe.title}
-                  height="140"
-                  image={recipe.image}
-                />
-                <CardContent>
-                  <Typography variant="h6">{recipe.title}</Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {recipe.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {error && (
+          <Typography variant="body1" color="error" align="center" gutterBottom>
+            {error}
+          </Typography>
+        )}
+        {loading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mt={4}
+          >
+            <CircularProgress />
+          </Box>
+        ) : recipes.length > 0 ? (
+          <Grid container spacing={2} style={{ marginTop: "2rem" }}>
+            {recipes.map((recipe) => (
+              <Grid item xs={12} sm={6} md={4} key={recipe.idMeal}>
+                <RecipeCard recipe={recipe} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <RandomRecipe apiUrl={apiUrl} />
+        )}
       </Container>
     </Box>
   );

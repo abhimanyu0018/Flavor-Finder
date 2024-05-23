@@ -50,3 +50,27 @@ export const getRandomRecipe = async (req,res) => {
         return res.status(500).json({ success: false, error: error.message });
     }
 }
+
+// Controller for fetching a recipe by ID
+export const getRecipeById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch recipe with ID ${id}. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || !data.meals) {
+            return res.status(404).json({ success: false, error: 'Recipe not found' });
+        }
+
+        return res.status(200).json({ success: true, data: data.meals[0] });
+    } catch (error) {
+        console.error('Error fetching recipe:', error.message);
+        return res.status(500).json({ success: false, error: error.message });
+    }
+};
